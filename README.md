@@ -1,6 +1,6 @@
 # Eest
 
-中文文档[README-CN](./README-CN.md)
+[中文文档](./README-CN.md)
 
 > Easy-to-use, incredibly fast, test tool that maintains the `original operating environment'.
 
