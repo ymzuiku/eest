@@ -83,9 +83,9 @@ Run： `npm test`。
 
 The reason why there is no separate execution is that the first is for better performance, and the author hopes that if there is interference between them, the developers will handle it by themselves.
 
-## watch
+## Watch
 
-Eest was originally designed to introduce test objects and execute node programs in a minimal way. Because of its simplicity, nature is well compatible with the ecology around node. We can use the nodemon and other libraries directly for change monitoring:
+Eest was originally designed to introduce test objects and execute node programs in a minimal way. Because of its simplicity, nature is well compatible with the ecology around node. We can use the `nodemon` or other libraries directly for change monitoring:
 
 ```sh
 $ npm i nodemon --save
@@ -101,7 +101,7 @@ Write package.json, use nodemon:
 }
 ```
 
-## babel
+## Babel
 
 In order not to pollute the original project's babel, we use @babel/register and introduce it before the test starts.
 
