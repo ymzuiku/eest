@@ -1,6 +1,6 @@
 {
   "name": "eest",
-  "version": "0.1.12",
+  "version": "0.2.1",
   "main": "eest.js",
   "private": false,
   "bin": {
