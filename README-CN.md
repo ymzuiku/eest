@@ -91,7 +91,7 @@ require('b.spec.js');
 
 之所以没有进行分离执行，一是为了更好的性能，并且作者希望它们之间若有干扰，由开发者自行处理。
 
-## watch
+## Watch
 
 Eest 原本的设计仅仅是引入测试对象，执行 node 程序的极简方式，因为简单，所以自然和 node 周边的生态有了很好的兼容。我们可以直接使用 nodemon 等库做改动监听：
 
@@ -109,7 +109,7 @@ $ npm i nodemon --save
 }
 ```
 
-## babel
+## Babel
 
 为了不污染原项目的 babel，我们使用 @babel/register, 并且在测试启动前引入它。
 
