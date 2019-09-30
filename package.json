@@ -1,0 +1,12 @@
+{
+  "name": "eest",
+  "version": "0.1.12",
+  "main": "eest.js",
+  "private": false,
+  "bin": {
+    "eest": "bin.js"
+  },
+  "dependencies": {
+    "fs-extra": "^8.1.0"
+  }
+}
