@@ -11,12 +11,6 @@ if (!matchs) {
   throw new Error('need input match files names');
 }
 
-let config;
-
-if (fs.existsSync(pwd('eest.config.js'))) {
-  config = require(pwd('eest.config.js'));
-}
-
 const loadTestFiles = dir => {
   const files = fs.readdirSync(dir);
   files.forEach(file => {
@@ -38,11 +32,4 @@ const loadTestFiles = dir => {
   });
 };
 
-const start = async () => {
-  if (typeof config === 'function') {
-    await config(argv);
-  }
-  loadTestFiles(pwd(root));
-};
-
-start();
+loadTestFiles(pwd(root));

@@ -47,10 +47,13 @@ $ npm i eest --save
 **Write test file**
 
 ```js
-const { describe, it } = require('eest');
+const { describe } = require('eest');
 const createUser = require('createUser');
 
-describe('Create user', () => {
+describe('Create user', async it => {
+  // get async/await something
+  const db = await MongoClient('....');
+
   it('Check password length', expect => {
     const user = createUser('username', '123');
 
@@ -135,10 +138,19 @@ eest ./src spec.js
 Create file `eest.config.js` at root project:
 
 ```js
-// The modules.exports function performs subsequent tests after promise
-modules.exports = async () => {
-  const db = await MongodbClient('...');
-  global.db = db;
+// The modules.exports function performs every describe tests after promise
+modules.exports = async ({ describeName, describeDetail, beforeAllEvents, allProgress }) => {
+  // Every describe run here, you can add lock, or do someting at describe
+  if (describeName === 'test user') {
+    // if return false, skip the describe
+    return false;
+  }
+
+  if (!global.db) {
+    lock = true;
+    const db = await MongodbClient('...');
+    global.db = db;
+  }
 };
 ```
 

@@ -44,14 +44,16 @@ $ npm i eest --save
 **编写测试文件**
 
 ```js
-const { describe, it } = require('eest');
+const { describe } = require('eest');
 const createUser = require('createUser');
 
-describe('创建用户', () => {
-  it('密码长度校验', expect => {
+describe('Create user', async it => {
+  // get async/await something
+  const db = await MongoClient('....');
+
+  it('Check password length', expect => {
     const user = createUser('username', '123');
 
-    // 校验密码长度是否大于等于6
     expect.eq(user.password.length >= 6, true);
   });
 });
@@ -144,9 +146,18 @@ eest ./src spec.js
 
 ```js
 // 导出的函数会在 promise 之后再执行后续的测试
-modules.exports = async () => {
-  const db = await MongodbClient('...');
-  global.db = db;
+modules.exports = async ({ describeName, describeDetail, beforeAllEvents, allProgress }) => {
+  // 所有 describe 运行之前都会运行这个函数
+  if (describeName === 'test user') {
+    // 如果返回 false， 会跳过此 describe
+    return false;
+  }
+
+  if (!global.db) {
+    lock = true;
+    const db = await MongodbClient('...');
+    global.db = db;
+  }
 };
 ```
 
