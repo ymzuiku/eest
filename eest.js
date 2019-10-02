@@ -10,26 +10,25 @@ const log = {
     if (process.env.nocolor) {
       console.log('[eest]', ...args);
     }
-    console.log('[eest]', ...args);
-    // console.log(colors.green('[eest]', ...args));
+    console.log(colors.dim('[eest]'), ...args);
   },
   warn: (...args) => {
     if (process.env.nocolor) {
       console.log('[eest]', ...args);
     }
-    console.log(colors.brightRed('[eest]', ...args));
+    console.log(colors.dim('[eest]'), colors.brightRed(...args));
   },
   error: (...args) => {
     if (process.env.nocolor) {
       console.log('[eest]', ...args);
     }
-    console.log(colors.brightRed(colors.underline('[eest]', ...args)));
+    console.log(colors.dim('[eest]'), colors.brightRed(colors.underline(...args)));
   },
   light: (...args) => {
     if (process.env.nocolor) {
       console.log('[eest]', ...args);
     }
-    console.log(colors.bold('[eest]', ...args));
+    console.log(colors.dim('[eest]'), colors.bold(...args));
   },
 };
 
