@@ -24,7 +24,7 @@ That's what Eest is. `Jest` is great, but Eest is what I want. It makes me feel 
 
 Since it is the most primitive appearance, it brings us:
 
-- high performance
+- High performance, incredibly fast
 
 - No global variables
 
@@ -130,16 +130,23 @@ Install @babel/register:
 
 ```sh
 yarn add @babel/core @babel/register -D
+# If your use React:
+# yarn add babel-preset-react-app babel-plugin-named-asset-import -D
 ```
 
 Create `eest.config.js` at project root:
 
 ```js
+const { resolve } = require('path');
+
 require('@babel/register')({
   ignore: [/node_modules/],
   cache: true,
+  configFile: resolve(__dirname, 'babel.eest.json'),
 });
 ```
+
+Create `babel.eest.json` write babel config.
 
 More babel info：https://babeljs.io/docs/en/next/babel-register.html
 

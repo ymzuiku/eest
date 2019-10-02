@@ -21,7 +21,7 @@ Eest 就是如此，虽然 jest 很伟大，但是 Eest 才是我要的。它让
 
 既然是最原始的面貌，它给我们带来了:
 
-- 高性能
+- 高性能, 难以置信的快速
 - 没有全局变量
 - 没有黑魔法
 - 没有需要额外学习的 API
@@ -138,13 +138,18 @@ yarn add @babel/core @babel/register -D
 在项目根目录创建 `eest.config.js`:
 
 ```js
+const { resolve } = require('path');
+
 require('@babel/register')({
   ignore: [/node_modules/],
   cache: true,
+  configFile: resolve(__dirname, 'babel.eest.json'),
 });
 ```
 
-具体的配置请查阅：https://babeljs.io/docs/en/next/babel-register.html
+创建 babel.eest.json 编写 babel 配置.
+
+更多 babel 信息，请参考：https://babeljs.io/docs/en/next/babel-register.html
 
 执行测试:
 

@@ -68,7 +68,7 @@ const createIt = progress => async (name, checker) => {
 
 /** Describe a task */
 const describe = async (name, task = ITask) => {
-  if (config && !global.__configRunLock) {
+  if (typeof config === 'function' && !global.__configRunLock) {
     global.__configRunLock = true;
     const unSkipThis = await config({
       describeName: name,

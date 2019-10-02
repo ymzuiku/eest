@@ -11,24 +11,35 @@ if (!matchs) {
   throw new Error('need input match files names');
 }
 
+const ignores = ['node_modules', '.git', '.cache', '.vscode', '.idea'];
+
 const loadTestFiles = dir => {
-  const files = fs.readdirSync(dir);
-  files.forEach(file => {
-    const nextDir = resolve(dir, file);
-    const stat = fs.statSync(nextDir);
-    if (stat && stat.isDirectory()) {
-      loadTestFiles(nextDir);
-    } else {
-      let isMatch = false;
-      matchs.forEach(str => {
-        if (file.indexOf(str) > -1) {
-          isMatch = true;
-        }
-      });
-      if (isMatch) {
-        require(nextDir);
-      }
+  fs.readdir(dir, (err, files) => {
+    if (err) {
+      return;
     }
+    files.forEach(file => {
+      if (ignores.indexOf(file) > -1) {
+        return;
+      }
+
+      const nextDir = resolve(dir, file);
+
+      const stat = fs.statSync(nextDir);
+      if (stat && stat.isDirectory()) {
+        loadTestFiles(nextDir);
+      } else {
+        let isMatch = false;
+        matchs.forEach(str => {
+          if (file.indexOf(str) > -1) {
+            isMatch = true;
+          }
+        });
+        if (isMatch) {
+          require(nextDir);
+        }
+      }
+    });
   });
 };
 
