@@ -33,7 +33,7 @@ const describe = async (name, checker) => {
     const title = isPass ? 'SUCCESSFUL' : 'FAILED';
 
     console.log(` `);
-    console.log(`* ${name} [time ${(Date.now() - start) / 1000} s]:`);
+    console.log(`[${name}]:`);
     progress.total.forEach(n => {
       let isFailName = true;
       if (progress.pass.find(v => v == n)) {
@@ -42,7 +42,7 @@ const describe = async (name, checker) => {
       if (progress.skip.find(v => v == n)) {
         isFailName = false;
       }
-      console.log(` ${isFailName ? '[x]' : '[o]'} ${n}`);
+      console.log(` ${isFailName ? '[x]' : '[o]'} ${n} ${isFailName ? ' <-*' : ''}`);
     });
 
     const passStr = progress.pass.length > 0 ? `pass:${progress.pass.length}` : undefined;
@@ -51,7 +51,7 @@ const describe = async (name, checker) => {
 
     const endStr = [passStr, failStr, skipStr].filter(Boolean).join(', ');
 
-    console.log(`[${title}] ${endStr}`);
+    console.log(`[${title}] ${endStr} ${(Date.now() - start) / 1000} s`);
 
     console.log(' ');
 
