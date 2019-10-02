@@ -140,7 +140,7 @@ const describe = async (describeName, task = ITask) => {
 
       // 因错误中断
       if (progress.fail.length > 0) {
-        log.light(`[=FAILED=]  -  Time: ${(Date.now() - start) / 1000}s`);
+        log.info(`[=FAILED=]  -  Time: ${(Date.now() - start) / 1000}s`);
         console.log(' ');
         process.exit(1);
       }
@@ -150,7 +150,7 @@ const describe = async (describeName, task = ITask) => {
       // 结束统计
       if (taskLogs.length === taskList.length) {
         const isPass = allProgress.fail.length === 0;
-        log.light(
+        log.info(
           `[=SUCCESSFUL=] describe pass: ${allProgress.pass.length}/${
             allProgress.total.length
           }  -  Time: ${(Date.now() - start) / 1000}s`
