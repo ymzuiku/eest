@@ -118,7 +118,7 @@ $ npm i nodemon --save
 ```json
 {
   "scripts": {
-    "test": "nodemon node_modules/.bin/eest ./src spec.js test.js"
+    "test": "watch=1 nodemon node_modules/.bin/eest ./src spec.js test.js"
   }
 }
 ```

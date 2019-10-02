@@ -1,8 +1,37 @@
 #!/usr/bin/env node
 
+const colors = require('colors/safe');
 const fs = require('fs-extra');
 const { resolve, dirname } = require('path');
 const pwd = (...args) => resolve(process.cwd(), ...args);
+
+const log = {
+  info: (...args) => {
+    if (process.env.nocolor) {
+      console.log('[eest]', ...args);
+    }
+    console.log('[eest]', ...args);
+    // console.log(colors.green('[eest]', ...args));
+  },
+  warn: (...args) => {
+    if (process.env.nocolor) {
+      console.log('[eest]', ...args);
+    }
+    console.log(colors.brightRed('[eest]', ...args));
+  },
+  error: (...args) => {
+    if (process.env.nocolor) {
+      console.log('[eest]', ...args);
+    }
+    console.log(colors.brightRed(colors.underline('[eest]', ...args)));
+  },
+  light: (...args) => {
+    if (process.env.nocolor) {
+      console.log('[eest]', ...args);
+    }
+    console.log(colors.bold('[eest]', ...args));
+  },
+};
 
 let config;
 if (fs.existsSync(pwd('eest.config.js'))) {
@@ -22,10 +51,6 @@ const allProgress = {
 
 const taskList = [];
 const taskLogs = [];
-
-function getTitle(isPass) {
-  return isPass ? 'FAILED' : 'SUCCESSFUL';
-}
 
 /** Describe a task */
 const describe = async (describeName, task = ITask) => {
@@ -88,9 +113,9 @@ const describe = async (describeName, task = ITask) => {
       if (calcData._throw) return;
       if (!value) {
         calcData._fail = true;
+        calcData._throw = true;
       } else {
         calcData._fail = false;
-        calcData._throw = true;
       }
     };
 
@@ -98,21 +123,36 @@ const describe = async (describeName, task = ITask) => {
 
     calc();
 
-    checkerLogs.push(() => console.log(` ${calcData._fail ? '[x]' : '[√]'} ${name} ${calcData._fail ? ` <-*` : ''}`));
+    checkerLogs.push(() =>
+      log[calcData._fail ? 'warn' : 'info'](
+        `${calcData._fail ? '[x]' : '[√]'} ${name} ${calcData._fail ? ` <-*` : ''}`
+      )
+    );
     if (checkerLogs.length === checkerList.length) {
       allProgress.total = [...allProgress.total, progress.total];
       allProgress.pass = [...allProgress.pass, progress.pass];
       allProgress.fail = [...allProgress.fail, progress.fail];
 
+      log[progress.fail.length > 0 ? 'warn' : 'info'](
+        `[${describeName}] it pass : ${progress.pass.length}/${progress.total.length}`
+      );
       checkerLogs.forEach(v => v());
-      console.log(`[${describeName}] it pass : ${progress.pass.length}/${progress.total.length}`);
       console.log(' ');
 
+      // 因错误中断
+      if (progress.fail.length > 0) {
+        log.light(`[=FAILED=]  -  Time: ${(Date.now() - start) / 1000}s`);
+        console.log(' ');
+        process.exit(1);
+      }
+
       taskLogs.push(1);
+
+      // 结束统计
       if (taskLogs.length === taskList.length) {
         const isPass = allProgress.fail.length === 0;
-        console.log(
-          `[=${getTitle(isPass)}=] describe pass: ${allProgress.pass.length}/${
+        log.light(
+          `[=SUCCESSFUL=] describe pass: ${allProgress.pass.length}/${
             allProgress.total.length
           }  -  Time: ${(Date.now() - start) / 1000}s`
         );
@@ -121,10 +161,6 @@ const describe = async (describeName, task = ITask) => {
           process.exit(isPass ? 0 : 1);
         }
       }
-    }
-
-    if (calcData._fail) {
-      process.exit(1);
     }
   });
 };
