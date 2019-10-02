@@ -51,10 +51,10 @@ describe('Create user', async it => {
   // get async/await something
   const db = await MongoClient('....');
 
-  it('Check password length', expect => {
+  it('Check password length', assert => {
     const user = createUser('username', '123');
 
-    expect.eq(user.password.length >= 6, true);
+    assert(user.password.length >= 6);
   });
 });
 ```

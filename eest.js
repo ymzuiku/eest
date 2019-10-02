@@ -26,11 +26,7 @@ const allProgress = {
 };
 
 /** interface */
-const IExpect = {
-  eq: (a, b) => {},
-  pass: (isPass = true) => {},
-};
-function IChecker(expect = IExpect) {}
+function IChecker(assert = () => {}) {}
 function IIt(name = '', checker = IChecker) {}
 function IDescribeChecker(it = IIt) {}
 
@@ -44,42 +40,34 @@ const createIt = progress => async (name, checker) => {
   }
   progress.total.push(name);
 
-  const expect = {
+  const calcData = {
     _skip: false,
     _fail: true,
     _throw: false,
-    eq: (a, b) => {
-      if (expect._throw) return;
-      if (a === b) {
-        expect._fail = false;
-      } else {
-        expect._fail = true;
-        expect._throw = true;
-      }
-    },
-    pass: isPass => {
-      if (expect._throw) return;
-      if (isPass) {
-        expect._fail = true;
-      } else {
-        expect._fail = false;
-        expect._throw = true;
-      }
-    },
   };
 
   // 计算进度
   const calc = () => {
-    if (expect._skip) {
+    if (calcData._skip) {
       progress.skip.push(name);
-    } else if (expect._fail) {
+    } else if (calcData._fail) {
       progress.fail.push(name);
     } else {
       progress.pass.push(name);
     }
   };
 
-  await checker(expect);
+  const assert = value => {
+    if (calcData._throw) return;
+    if (!value) {
+      calcData._fail = true;
+    } else {
+      calcData._fail = false;
+      calcData._throw = true;
+    }
+  };
+
+  await checker(assert);
   calc();
 
   return progress;
@@ -150,15 +138,19 @@ const describe = async (name, detail = IDescribeChecker) => {
 
       if (describeLen === 0 || !isPass) {
         const title = allProgress.fail.length === 0 ? 'SUCCESSFUL' : 'FAILED';
-        const totalStr = allProgress.total.length > 0 ? `total:${allProgress.total.length}` : undefined;
-        const passStr = allProgress.pass.length > 0 ? `pass:${allProgress.pass.length}` : undefined;
+        // const totalStr = allProgress.total.length > 0 ? `total:${allProgress.total.length}` : undefined;
+        // const passStr = allProgress.pass.length > 0 ? `pass:${allProgress.pass.length}` : undefined;
         const failStr = allProgress.fail.length > 0 ? `fail:${allProgress.fail.length}` : undefined;
-        const skipStr = allProgress.skip.length > 0 ? `skip:${allProgress.skip.length}` : undefined;
+        // const skipStr = allProgress.skip.length > 0 ? `skip:${allProgress.skip.length}` : undefined;
 
-        const endStr = [totalStr, passStr, failStr, skipStr].filter(Boolean).join(', ');
+        // const endStr = [totalStr, passStr, failStr, skipStr].filter(Boolean).join(', ');
 
         console.log(' ');
-        console.log(`[${title}] ${endStr} - ${(Date.now() - start) / 1000} s`);
+        console.log(
+          `[${title}] pass:${allProgress.pass.length}/${allProgress.total.length}${
+            failStr ? `, ${failStr}` : ''
+          } - ${(Date.now() - start) / 1000} s`
+        );
         console.log(' ');
       }
 
