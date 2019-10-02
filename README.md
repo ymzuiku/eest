@@ -22,13 +22,21 @@ What is the essence of recall testing? It simply replaces our manual verificatio
 
 That's what Eest is. `Jest` is great, but Eest is what I want. It makes me feel that there is no burden in writing and executing test code. It has the original console printing and error information, and it returns to the original appearance of the source program.
 
-Since it is the most primitive aspect, we should not have the cost of learning.
+Since it is the most primitive appearance, it brings us:
+
+- high performance
 
 - No global variables
 
 - No black magic
 
 - No API requiring extra study
+
+At the same time, we have lost:
+
+- No test coverage check: If you need it badly, there may be a parallel operating environment to reclaim test coverage in the future.
+
+- Not separating the operating environment of each unit: This is good for some cases, and it may expose functions with side effects.
 
 ## Principle
 
