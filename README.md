@@ -22,6 +22,14 @@ What is the essence of recall testing? It simply replaces our manual verificatio
 
 That's what Eest is. `Jest` is great, but Eest is what I want. It makes me feel that there is no burden in writing and executing test code. It has the original console printing and error information, and it returns to the original appearance of the source program.
 
+Since it is the most primitive aspect, we should not have the cost of learning.
+
+- No global variables
+
+- No black magic
+
+- No API requiring extra study
+
 ## Principle
 
 The Eest principle is very simple. It just provides several functions to record the results of the verification. We introduce the test target code and execute it with node. Finally, Eest throws out the test verification results, that's all. It's so simple that the author completes the core function just two hours before he goes to bed.
@@ -139,7 +147,7 @@ Create file `eest.config.js` at root project:
 
 ```js
 // The modules.exports function performs every describe tests after promise
-modules.exports = async ({ describeName, describeDetail, beforeAllEvents, allProgress }) => {
+modules.exports = async ({ describeName, describeTask, allProgress }) => {
   // Every describe run here, you can add lock, or do someting at describe
   if (describeName === 'test user') {
     // if return false, skip the describe

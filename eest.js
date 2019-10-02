@@ -9,13 +9,6 @@ if (fs.existsSync(pwd('eest.config.js'))) {
   config = require(pwd('eest.config.js'));
 }
 
-let beforeAllEvents = new Set();
-const beforeAll = event => {
-  if (!beforeAllEvents.has(event)) {
-    beforeAllEvents.add(event);
-  }
-};
-
 let describeLen = 0;
 
 const allProgress = {
@@ -28,7 +21,7 @@ const allProgress = {
 /** interface */
 function IChecker(assert = () => {}) {}
 function IIt(name = '', checker = IChecker) {}
-function IDescribeChecker(it = IIt) {}
+function ITask(it = IIt) {}
 
 /** Create it to describe */
 const createIt = progress => async (name, checker) => {
@@ -74,13 +67,12 @@ const createIt = progress => async (name, checker) => {
 };
 
 /** Describe a task */
-const describe = async (name, detail = IDescribeChecker) => {
+const describe = async (name, task = ITask) => {
   if (config && !global.__configRunLock) {
     global.__configRunLock = true;
     const unSkipThis = await config({
       describeName: name,
-      describeDetail: detail,
-      beforeAllEvents,
+      describeTask: task,
       allProgress,
     });
 
@@ -94,15 +86,11 @@ const describe = async (name, detail = IDescribeChecker) => {
   if (typeof name !== 'string') {
     throw new Error('describe name need typeof string');
   }
-  if (typeof detail !== 'function') {
-    throw new Error('describe chekcer need typeof function');
+  if (typeof task !== 'function') {
+    throw new Error('describe task need typeof function');
   }
 
   describeLen += 1;
-
-  if (beforeAllEvents.size > 0) {
-    await Promise.all(Array.from(beforeAllEvents));
-  }
 
   setTimeout(async () => {
     const progress = {
@@ -112,7 +100,7 @@ const describe = async (name, detail = IDescribeChecker) => {
       skip: [],
     };
 
-    await detail(createIt(progress));
+    await task(createIt(progress));
 
     setTimeout(() => {
       describeLen -= 1;
@@ -161,7 +149,4 @@ const describe = async (name, detail = IDescribeChecker) => {
   });
 };
 
-module.exports = {
-  describe,
-  beforeAll,
-};
+module.exports = describe;

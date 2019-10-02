@@ -19,6 +19,12 @@ jest \ ava 等测试库做的都太多了，它们为了更好的定位错误，
 
 Eest 就是如此，虽然 jest 很伟大，但是 Eest 才是我要的。它让我感觉编写和执行测试代码没有任何负担，有着原始的 console 打印和原始报错信息，回归了源程序本来的面貌。
 
+既然是最原始的面貌，我们也不应该有学习成本:
+
+- 没有全局变量
+- 没有黑魔法
+- 没有需要额外学习的 API
+
 ## 原理
 
 Eest 原理非常简单，它仅仅是提供了几个函数，用于我们记录校验的结果，我们引入测试目标代码，并且使用 node 执行。最后 Eest 抛出测试校验结果，仅此而已。它简单到以致于作者仅仅是在睡觉前两个小时的编写就完成了核心功能。
@@ -44,7 +50,7 @@ $ npm i eest --save
 **编写测试文件**
 
 ```js
-const { describe } = require('eest');
+const describe = require('eest'); // no other API, only a describe function
 const createUser = require('createUser');
 
 describe('Create user', async it => {
@@ -146,7 +152,7 @@ eest ./src spec.js
 
 ```js
 // 导出的函数会在 promise 之后再执行后续的测试
-modules.exports = async ({ describeName, describeDetail, beforeAllEvents, allProgress }) => {
+modules.exports = async ({ describeName, describeTask, allProgress }) => {
   // 所有 describe 运行之前都会运行这个函数
   if (describeName === 'test user') {
     // 如果返回 false， 会跳过此 describe
