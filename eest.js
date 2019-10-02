@@ -150,11 +150,12 @@ const describe = async (name, detail = IDescribeChecker) => {
 
       if (describeLen === 0 || !isPass) {
         const title = allProgress.fail.length === 0 ? 'SUCCESSFUL' : 'FAILED';
+        const totalStr = allProgress.total.length > 0 ? `total:${allProgress.total.length}` : undefined;
         const passStr = allProgress.pass.length > 0 ? `pass:${allProgress.pass.length}` : undefined;
         const failStr = allProgress.fail.length > 0 ? `fail:${allProgress.fail.length}` : undefined;
         const skipStr = allProgress.skip.length > 0 ? `skip:${allProgress.skip.length}` : undefined;
 
-        const endStr = [passStr, failStr, skipStr].filter(Boolean).join(', ');
+        const endStr = [totalStr, passStr, failStr, skipStr].filter(Boolean).join(', ');
 
         console.log(' ');
         console.log(`[${title}] ${endStr} - ${(Date.now() - start) / 1000} s`);
