@@ -112,7 +112,7 @@ const describe = async (describeName, task = ITask) => {
       if (taskLogs.length === taskList.length) {
         const isPass = allProgress.fail.length === 0;
         console.log(
-          `[${getTitle(isPass)}] describe pass: ${allProgress.pass.length}/${
+          `[=${getTitle(isPass)}=] describe pass: ${allProgress.pass.length}/${
             allProgress.total.length
           }  -  Time: ${(Date.now() - start) / 1000}s`
         );
