@@ -63,19 +63,21 @@ $ npm i eest --save
 **Write test file**
 
 ```js
-const { describe } = require('eest');
 const createUser = require('createUser');
 
-describe('Create user', async it => {
-  // get async/await something
-  const db = await MongoClient('....');
+module.exports = (describe, cache) => {
+  // console.log(cache) // {} global cache data
+  describe('Create user', async it => {
+    // get async/await something
+    const db = await MongoClient('....');
 
-  it('Check password length', assert => {
-    const user = createUser('username', '123');
+    it('Check password length', assert => {
+      const user = createUser('username', '123');
 
-    assert(user.password.length >= 6);
+      assert(user.password.length >= 6);
+    });
   });
-});
+};
 ```
 
 **Run test**
@@ -115,7 +117,7 @@ Write package.json, use nodemon:
 ```json
 {
   "scripts": {
-    "test": "watch=1 nodemon node_modules/.bin/eest ./src spec.js test.js"
+    "test": "nodemon node_modules/.bin/eest ./src spec.js test.js --watch"
   }
 }
 ```
@@ -162,18 +164,8 @@ Create file `eest.config.js` at root project:
 
 ```js
 // The modules.exports function performs every describe tests after promise
-modules.exports = async ({ describeName, describeTask, allProgress }) => {
-  // Every describe run here, you can add lock, or do someting at describe
-  if (describeName === 'test user') {
-    // if return false, skip the describe
-    return false;
-  }
-
-  if (!global.db) {
-    lock = true;
-    const db = await MongodbClient('...');
-    global.db = db;
-  }
+modules.exports = async cache => {
+  cache.db = await MongodbClient('...');
 };
 ```
 

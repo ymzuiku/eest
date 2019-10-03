@@ -56,27 +56,21 @@ $ npm i eest --save
 **编写测试文件**
 
 ```js
-const describe = require('eest'); // no other API, only a describe function
 const createUser = require('createUser');
 
-describe('Create user', async it => {
-  // get async/await something
-  const db = await MongoClient('....');
+module.exports = (describe, cache) => {
+  // console.log(cache) // {} global cache data
+  describe('Create user', async it => {
+    // get async/await something
+    const db = await MongoClient('....');
 
-  it('Check password length', assert => {
-    const user = createUser('username', '123');
+    it('Check password length', assert => {
+      const user = createUser('username', '123');
 
-    assert(user.password.length >= 6);
+      assert(user.password.length >= 6);
+    });
   });
-});
-```
-
-**执行测试**
-
-最后仅仅是使用 node 去执行它，和执行我们源程序一样：
-
-```sh
-node controller/createUser.spec.js
+};
 ```
 
 ## 对整个项目进行测试
@@ -91,17 +85,7 @@ node controller/createUser.spec.js
 }
 ```
 
-以上脚本表示，命令执行目录下，文件名包含 spec.js 或 test.js 的文件都会被引入并进行测试，它们之间并不是分离的，实际形式如:
-
-```js
-// all.test.js
-require('a.spec.js');
-require('b.spec.js');
-
-// node all.test.js
-```
-
-最后再执行： `npm test`。
+以上脚本表示，命令执行目录下，文件名包含 spec.js 或 test.js 的文件都会被引入并进行测试
 
 之所以没有进行分离执行，一是为了更好的性能，并且作者希望它们之间若有干扰，由开发者自行处理。
 
@@ -118,7 +102,7 @@ $ npm i nodemon --save
 ```json
 {
   "scripts": {
-    "test": "watch=1 nodemon node_modules/.bin/eest ./src spec.js test.js"
+    "test": "nodemon node_modules/.bin/eest ./src spec.js test.js --watch"
   }
 }
 ```
@@ -163,18 +147,8 @@ eest ./src spec.js
 
 ```js
 // 导出的函数会在 promise 之后再执行后续的测试
-modules.exports = async ({ describeName, describeTask, allProgress }) => {
-  // 所有 describe 运行之前都会运行这个函数
-  if (describeName === 'test user') {
-    // 如果返回 false， 会跳过此 describe
-    return false;
-  }
-
-  if (!global.db) {
-    lock = true;
-    const db = await MongodbClient('...');
-    global.db = db;
-  }
+modules.exports = async cache => {
+  cache.db = await MongodbClient('...');
 };
 ```
 
