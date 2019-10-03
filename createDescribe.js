@@ -118,7 +118,7 @@ const createDescribe = ({ url, argv, getLastErrors, updateLastErrors, isWatch })
 
         if (!skipLogPassTask || progress.fail.length > 0) {
           log[progress.fail.length > 0 ? 'warn' : 'info'](
-            `[${describeName}] pass : ${progress.pass.length}/${progress.total.length}`
+            `[${describeName}] ${progress.fail.length > 0 ? 'fail' : 'pass'}`
           );
         }
 
