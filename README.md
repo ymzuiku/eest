@@ -104,6 +104,12 @@ Run： `npm test`。
 
 The reason why there is no separate execution is that the first is for better performance, and the author hopes that if there is interference between them, the developers will handle it by themselves.
 
+## Automatic Focal Length Error Test File
+
+Eest will automatically Focus last error test files, so that in hundreds of test files, focusing on the current error file stack, greatly improving performance, when the error is resolved, Eest will re-traverse the entire test target folder.
+
+The error cache file is stored in `node_modules/_eestErrorCache.json`, and we can also manually clear it to traverse the entire test folder again.
+
 ## Watch
 
 Eest was originally designed to introduce test objects and execute node programs in a minimal way. Because of its simplicity, nature is well compatible with the ecology around node. We can use the `nodemon` or other libraries directly for change monitoring:

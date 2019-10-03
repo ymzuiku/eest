@@ -23,14 +23,10 @@ const createDescribe = require('./createDescribe');
 const ignores = ['node_modules', '.git', '.cache', '.vscode', '.idea'];
 const cache = {};
 
-let errorPathCache;
-if (fs.existsSync('node_modules')) {
-  errorPathCache = pwd('node_modules/_eestErrorCache.json');
-} else if (fs.existsSync('.vscode')) {
-  errorPathCache = pwd('.vscode/_eestErrorCache.json');
-} else {
-  errorPathCache = pwd('_eestErrorCache.json');
+if (!fs.existsSync('node_modules')) {
+  fs.mkdirSync(pwd('node_modules'));
 }
+const errorPathCache = pwd('node_modules/_eestErrorCache.json');
 
 let lastErrors;
 
