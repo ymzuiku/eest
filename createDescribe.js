@@ -1,19 +1,4 @@
-const colors = require('colors/safe');
-
-const log = {
-  info: (...args) => {
-    if (process.env.nocolor) {
-      console.log('[eest]', ...args);
-    }
-    console.log(colors.dim('[eest]'), ...args);
-  },
-  warn: (...args) => {
-    if (process.env.nocolor) {
-      console.log('[eest]', ...args);
-    }
-    console.log(colors.dim('[eest]'), colors.brightRed(...args));
-  },
-};
+const { log } = require('./log');
 
 /** interface */
 function IChecker(assert = () => {}) {}

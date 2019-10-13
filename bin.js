@@ -4,6 +4,7 @@ const fs = require('fs-extra');
 const { resolve } = require('path');
 const pwd = (...args) => resolve(process.cwd(), ...args);
 const argv = process.argv.splice(2);
+const { log } = require('./log');
 
 // let [root, matchs] = argv;
 let root = argv[0];
@@ -59,7 +60,12 @@ if (fs.existsSync(pwd('eest.config.js'))) {
 }
 
 function requireSpec(url) {
-  require(url)(
+  const spec = require(url);
+  if (typeof spec !== 'function') {
+    log.warn(`Path module.exports is no function: ${url}`);
+    return;
+  }
+  spec(
     createDescribe({
       url,
       argv,
@@ -77,6 +83,7 @@ const loadTestFiles = dir => {
     if (err) {
       return;
     }
+
     files.forEach(file => {
       if (ignores.indexOf(file) > -1) {
         return;
@@ -120,6 +127,7 @@ async function start() {
   if (isLoadErrorFiles) {
     historyErrors.forEach(url => requireSpec(url));
   } else {
+    fs.removeSync(errorPathCache);
     loadTestFiles(pwd(root));
   }
 }
