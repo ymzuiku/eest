@@ -7,10 +7,13 @@ const argv = process.argv.splice(2);
 
 let [root, ...matchs] = argv;
 let isWatch = false;
+let isHiddenIt;
 
 argv.forEach(v => {
   if (v === '--watch' || v === '-w') {
     isWatch = true;
+  } else if (v === '--hiddenIt' || v === '-ht') {
+    isHiddenIt = true;
   }
 });
 
@@ -60,6 +63,7 @@ function requireSpec(url) {
       getLastErrors,
       updateLastErrors,
       isWatch,
+      isHiddenIt,
     }),
     { url, cache }
   );

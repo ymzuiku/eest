@@ -35,7 +35,7 @@ function createData() {
 createData();
 
 /** Describe a task */
-const createDescribe = ({ url, argv, getLastErrors, updateLastErrors, isWatch }) => {
+const createDescribe = ({ url, argv, getLastErrors, updateLastErrors, isWatch, isHiddenIt }) => {
   const describe = async (describeName, task = ITask) => {
     if (typeof describeName !== 'string') {
       throw new Error('describe name need typeof string');
@@ -101,13 +101,27 @@ const createDescribe = ({ url, argv, getLastErrors, updateLastErrors, isWatch })
       await checker(assert);
       calc();
 
-      checkerLogs.push(() => {
-        if (!skipLogPassTask || calcData._fail) {
-          log[calcData._fail ? 'warn' : 'info'](
-            `${calcData._fail ? '[x]' : '[√]'} ${name} ${calcData._fail ? ` <-*` : ''}`
-          );
+      // 若隐藏 It 日志，只打印错误的
+      if (isHiddenIt) {
+        if (calcData._fail) {
+          checkerLogs.push(() => {
+            if (!skipLogPassTask || calcData._fail) {
+              log[calcData._fail ? 'warn' : 'info'](
+                `${calcData._fail ? '[x]' : '[√]'} ${name} ${calcData._fail ? ` <-*` : ''}`
+              );
+            }
+          });
         }
-      });
+      } else {
+        checkerLogs.push(() => {
+          if (!skipLogPassTask || calcData._fail) {
+            log[calcData._fail ? 'warn' : 'info'](
+              `${calcData._fail ? '[x]' : '[√]'} ${name} ${calcData._fail ? ` <-*` : ''}`
+            );
+          }
+        });
+      }
+
       if (calcData._fail) {
         taskErrorUrls[errorKey] = url;
       }
