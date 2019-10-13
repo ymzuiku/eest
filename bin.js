@@ -24,8 +24,6 @@ if (matchs.length === 0) {
   matchs = ['spec.js'];
 }
 
-console.log('matwwww', matchs);
-
 const createDescribe = require('./createDescribe');
 
 const ignores = ['node_modules', '.git', '.cache', '.vscode', '.idea'];
