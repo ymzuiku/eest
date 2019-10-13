@@ -111,6 +111,8 @@ const createDescribe = ({ url, argv, getLastErrors, updateLastErrors, isWatch, i
               );
             }
           });
+        } else {
+          checkerLogs.push(() => {});
         }
       } else {
         checkerLogs.push(() => {
