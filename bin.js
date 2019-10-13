@@ -107,7 +107,17 @@ async function start() {
     await config(cache);
   }
   const historyErrors = new Set(Object.values(getLastErrors()));
+  let isLoadErrorFiles = false;
   if (historyErrors.size > 0) {
+    isLoadErrorFiles = true;
+    historyErrors.forEach(url => {
+      if (!fs.existsSync(url)) {
+        isLoadErrorFiles = false;
+      }
+    });
+  }
+
+  if (isLoadErrorFiles) {
     historyErrors.forEach(url => requireSpec(url));
   } else {
     loadTestFiles(pwd(root));
