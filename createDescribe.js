@@ -92,6 +92,7 @@ const createDescribe = ({ url, argv, getLastErrors, updateLastErrors, isWatch })
         if (!value) {
           calcData._fail = true;
           calcData._throw = true;
+          console.trace(`assert(${value})`);
         } else {
           calcData._fail = false;
         }

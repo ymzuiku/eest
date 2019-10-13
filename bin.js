@@ -26,7 +26,7 @@ const cache = {};
 if (!fs.existsSync('node_modules')) {
   fs.mkdirSync(pwd('node_modules'));
 }
-const errorPathCache = pwd('node_modules/_eestErrorCache.json');
+const errorPathCache = pwd(`node_modules/_eestErrorCache_${matchs.join('_')}.json`);
 
 let lastErrors;
 
