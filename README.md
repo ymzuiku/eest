@@ -95,7 +95,7 @@ We write `package.json` and add scripts
 ```json
 {
   "scripts": {
-    "test": "eest ./src spec.js test.js"
+    "test": "eest ./src 'spec.js, test.js'"
   }
 }
 ```
@@ -123,7 +123,7 @@ Write package.json, use nodemon:
 ```json
 {
   "scripts": {
-    "test": "nodemon node_modules/.bin/eest ./src spec.js test.js --watch"
+    "test": "nodemon node_modules/.bin/eest ./src 'spec.js, test.js' -watch"
   }
 }
 ```

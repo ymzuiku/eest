@@ -80,7 +80,7 @@ module.exports = (describe, cache) => {
 ```json
 {
   "scripts": {
-    "test": "eest ./src spec.js test.js"
+    "test": "eest ./src 'spec.js, test.js'"
   }
 }
 ```
@@ -103,15 +103,17 @@ Eest 原本的设计仅仅是引入测试对象，执行 node 程序的极简方
 $ npm i nodemon --save
 ```
 
-修改 package.json, 使用 nodemon
+修改 package.json, 使用 nodemon:
 
 ```json
 {
   "scripts": {
-    "test": "nodemon node_modules/.bin/eest ./src spec.js test.js --watch"
+    "test": "nodemon node_modules/.bin/eest ./src 'spec.js, test.js' -watch"
   }
 }
 ```
+
+添加 `-watch` 表示程序执行之后不会主动退出
 
 ## Babel
 

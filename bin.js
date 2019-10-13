@@ -5,14 +5,17 @@ const { resolve } = require('path');
 const pwd = (...args) => resolve(process.cwd(), ...args);
 const argv = process.argv.splice(2);
 
-let [root, ...matchs] = argv;
+// let [root, matchs] = argv;
+let root = argv[0];
+let matchs = argv[1].split(',').map(v => v.trim());
 let isWatch = false;
-let isHiddenIt;
+let isHiddenIt = false;
 
 argv.forEach(v => {
-  if (v === '--watch' || v === '-w') {
+  if (v === '-watch' || v === '-w') {
     isWatch = true;
-  } else if (v === '--hiddenIt' || v === '-ht') {
+  }
+  if (v === '-hiddenIt') {
     isHiddenIt = true;
   }
 });
@@ -20,6 +23,8 @@ argv.forEach(v => {
 if (matchs.length === 0) {
   matchs = ['spec.js'];
 }
+
+console.log('matwwww', matchs);
 
 const createDescribe = require('./createDescribe');
 
