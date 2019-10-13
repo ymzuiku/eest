@@ -60,11 +60,11 @@ const createUser = require('createUser');
 
 module.exports = (describe, cache) => {
   // console.log(cache) // {} global cache data
-  describe('Create user', async it => {
+  describe('Create user', async test => {
     // get async/await something
     const db = await MongoClient('....');
 
-    it('Check password length', assert => {
+    test('Check password length', assert => {
       const user = createUser('username', '123');
 
       assert(user.password.length >= 6);
