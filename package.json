@@ -1,7 +1,8 @@
 {
   "name": "eest",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "main": "bin.js",
+  "repository": "git@github.com:ymzuiku/eest.git",
   "private": false,
   "bin": {
     "eest": "bin.js"
